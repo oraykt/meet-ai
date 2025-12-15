@@ -18,8 +18,8 @@ import {
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { OctagonAlertIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z
   .object({
@@ -51,10 +51,34 @@ export const SignUpViews = () => {
         name: values.name,
         email: values.email,
         password: values.password,
+        callbackURL: '/',
       },
       {
         onSuccess: () => {
+          // TODO: Success toast
+          setPending(false);
           router.push('/');
+        },
+        onError: ({ error }) => {
+          setError(error.message);
+          setPending(false);
+        },
+      }
+    );
+  };
+
+  const onSocialSubmit = (provider: 'github' | 'google') => {
+    setError(null);
+    setPending(true);
+
+    authClient.signIn.social(
+      {
+        provider,
+        callbackURL: '/',
+      },
+      {
+        onSuccess: () => {
+          // TODO: Success toast
         },
         onError: ({ error }) => {
           setError(error.message);
@@ -144,21 +168,12 @@ export const SignUpViews = () => {
                   {pending ? 'Creating...' : 'Create account'}
                 </Button>
 
-                <button
-                  type="button"
-                  onClick={() => form.reset()}
-                  className="text-sm text-gray-600 hover:underline"
-                >
-                  Reset
-                </button>
+                <p>
+                  <Link href="/sign-in" className="text-sm text-gray-600 hover:underline">
+                    Already have an account?
+                  </Link>
+                </p>
               </div>
-
-              <p className="text-sm text-gray-600">
-                Already have an account?{' '}
-                <Link href="/sign-in" className="text-blue-600 hover:underline">
-                  Sign in
-                </Link>
-              </p>
 
               {!!error && (
                 <Alert className="bg-destructive/10 border-none text-red-600">
@@ -166,6 +181,49 @@ export const SignUpViews = () => {
                   <AlertTitle>Error: {error}</AlertTitle>
                 </Alert>
               )}
+
+              <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+                <span className="bg-card text-muted-foreground relative z-10 px-2">
+                  Continue with
+                </span>
+              </div>
+              <div className="grid grid-cols-5 gap-4">
+                <Button
+                  variant="outline"
+                  type="button"
+                  disabled={pending}
+                  className="w-fit"
+                  onClick={() => {
+                    onSocialSubmit('google');
+                  }}
+                >
+                  <span className="w-5 h-5 inline-flex">
+                    <img
+                      src="https://cdn.simpleicons.org/google/4285F4"
+                      alt="Google"
+                      className="w-full h-full"
+                    />
+                  </span>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  type="button"
+                  disabled={pending}
+                  className="w-fit"
+                  onClick={() => {
+                    onSocialSubmit('github');
+                  }}
+                >
+                  <span className="w-5 h-5 inline-flex">
+                    <img
+                      src="https://cdn.simpleicons.org/github/181717"
+                      alt="GitHub"
+                      className="w-full h-full"
+                    />
+                  </span>
+                </Button>
+              </div>
             </form>
           </Form>
 

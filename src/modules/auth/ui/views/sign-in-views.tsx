@@ -19,7 +19,6 @@ import {
 import { OctagonAlertIcon } from 'lucide-react';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
 
 const formSchema = z.object({
@@ -28,7 +27,6 @@ const formSchema = z.object({
 });
 
 export const SignInViews = () => {
-  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: '', password: '' },
@@ -41,10 +39,10 @@ export const SignInViews = () => {
     setPending(true);
 
     authClient.signIn.email(
-      { email: values.email, password: values.password },
+      { email: values.email, password: values.password, callbackURL: '/' },
       {
         onSuccess: () => {
-          router.push('/');
+          // TODO: Success toast
         },
         onError: ({ error }) => {
           setError(error.message);
@@ -52,9 +50,27 @@ export const SignInViews = () => {
         },
       }
     );
+  };
 
-    // On success you might redirect or refresh
-    // form.reset();
+  const onSocialSubmit = (provider: 'github' | 'google' | 'facebook') => {
+    setError(null);
+    setPending(true);
+
+    authClient.signIn.social(
+      {
+        provider,
+        callbackURL: '/',
+      },
+      {
+        onSuccess: () => {
+          // TODO: Success toast
+        },
+        onError: ({ error }) => {
+          setError(error.message);
+          setPending(false);
+        },
+      }
+    );
   };
 
   return (
@@ -131,31 +147,37 @@ export const SignInViews = () => {
                 </span>
               </div>
               <div className="grid grid-cols-5 gap-4">
-                <Button variant="outline" type="button" disabled={pending} className="w-fit">
+                <Button
+                  variant="outline"
+                  type="button"
+                  disabled={pending}
+                  className="w-fit"
+                  onClick={() => {
+                    onSocialSubmit('google');
+                  }}
+                >
                   <span className="w-5 h-5 inline-flex">
                     <img
-                      src="https://cdn.simpleicons.org/facebook/1877F2"
-                      alt="Facebook"
+                      src="https://cdn.simpleicons.org/google/4285F4"
+                      alt="Google"
                       className="w-full h-full"
                     />
                   </span>
                 </Button>
 
-                <Button variant="outline" type="button" disabled={pending} className="w-fit">
+                <Button
+                  variant="outline"
+                  type="button"
+                  disabled={pending}
+                  className="w-fit"
+                  onClick={() => {
+                    onSocialSubmit('github');
+                  }}
+                >
                   <span className="w-5 h-5 inline-flex">
                     <img
                       src="https://cdn.simpleicons.org/github/181717"
                       alt="GitHub"
-                      className="w-full h-full"
-                    />
-                  </span>
-                </Button>
-
-                <Button variant="outline" type="button" disabled={pending} className="w-fit">
-                  <span className="w-5 h-5 inline-flex">
-                    <img
-                      src="https://cdn.simpleicons.org/gitlab/FC6D26"
-                      alt="GitLab"
                       className="w-full h-full"
                     />
                   </span>

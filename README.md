@@ -15,3 +15,61 @@ This project uses the following technologies and libraries:
 - tailwind-merge
 
 Dev dependencies are managed via npm. Update `package.json` for exact versions.
+
+## UI Pages
+
+### Authentication Pages
+
+#### Sign In Page
+
+![Sign In Page](/public/README/SignIn.png)
+
+**Features:**
+
+- Email and password form fields with validation
+- Field-level error messages powered by `react-hook-form` and `zod`
+- "Remember me" checkbox
+- "Forgot password?" link
+- Link to create a new account
+- OAuth provider buttons (Google, GitHub)
+- Responsive design with branded side panel
+
+**Supported Methods:**
+
+- Email/Password authentication via `authClient.signIn.email()`
+- OAuth (Google, GitHub) via `authClient.signIn.social()`
+
+#### Sign Up Page
+
+![Sign Up Page](/public/README/SignUp.png)
+
+**Features:**
+
+- Form fields: Full Name, Email, Password, Confirm Password
+- Password confirmation validation (zod refine ensures match)
+- Field-level error messages with `FormMessage`
+- Form-level error alert display
+- OAuth provider buttons (Google, GitHub)
+- Link to existing account sign in
+- Responsive design with branded side panel
+
+**Supported Methods:**
+
+- Email/Password registration via `authClient.signUp.email()`
+- OAuth (Google, GitHub) via `authClient.signIn.social()`
+
+**Form Validation (Zod Schema):**
+
+```typescript
+const formSchema = z
+  .object({
+    name: z.string().min(1, { message: 'Name is required' }),
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(6, { message: 'Password should be at least 6 characters' }),
+    confirmPassword: z.string().min(6, { message: 'Confirm your password' }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
+```
