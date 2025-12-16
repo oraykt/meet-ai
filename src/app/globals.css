@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -51,7 +51,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(50.634% 0.19904 261.512);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -120,4 +120,21 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Gradient backgrounds */
+.gradient-blue {
+  @apply bg-gradient-to-br from-blue-50 to-blue-100;
+}
+
+.gradient-blue-dark {
+  @apply dark:bg-gradient-to-br dark:from-blue-950 dark:to-blue-900;
+}
+
+.gradient-auth {
+  @apply bg-gradient-to-br from-slate-50 via-white to-slate-50;
+}
+
+.gradient-auth-dark {
+  @apply dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950;
 }

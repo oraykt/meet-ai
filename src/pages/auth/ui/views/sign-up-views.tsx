@@ -89,8 +89,8 @@ export const SignUpViews = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <Card className="overflow-hidden p-0 max-w-3xl mx-auto">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Card className="overflow-hidden p-0 max-w-3xl w-full shadow-lg">
         <CardContent className="grid p-0 md:grid-cols-2">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 p-6">
