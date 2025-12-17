@@ -1,4 +1,4 @@
-import SignUpViews from '@/pages/auth/ui/views/sign-up-views';
+import SignUpViews from "@/pages/auth/ui/sign-up-views";
 
 const Page = () => {
   return <SignUpViews />;

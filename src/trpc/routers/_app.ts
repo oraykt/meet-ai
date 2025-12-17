@@ -1,4 +1,4 @@
-import { agentsRouter } from "@/pages/agents/procedures";
+import { agentsRouter } from "@/pages/agents/server/procedures";
 import { createTRPCRouter } from "@/trpc/init";
 
 export const appRouter = createTRPCRouter({
