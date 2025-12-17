@@ -6,7 +6,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const AgentsView = () => {
   const trpc = useTRPC();
-  const { data } = useSuspenseQuery(trpc.agents.getMany.queryOptions());
+  const { data: agents } = useSuspenseQuery(trpc.agents.getMany.queryOptions());
   return (
     <div>
       <ResponsiveDialog
@@ -17,6 +17,11 @@ export const AgentsView = () => {
       >
         <p>This is a responsive dialog content.</p>
       </ResponsiveDialog>
+      <div className="flex flex-col gap-2">
+        {agents.map((agent) => (
+          <div>{agent.name}</div>
+        ))}
+      </div>
     </div>
   );
 };

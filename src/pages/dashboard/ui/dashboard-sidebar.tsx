@@ -41,11 +41,13 @@ export function DashboardSidebar() {
             <img src="/meet-ai-logo.svg" alt="Meet.AI Logo" className="w-8 h-8" />
             <span className="font-semibold">Meet.AI</span>
           </div>
-          <div>
-            <Button onClick={toggleSidebar} variant="ghost">
-              {isMobile && <PanelLeftCloseIcon />}
-            </Button>
-          </div>
+          {isMobile && (
+            <div>
+              <Button onClick={toggleSidebar} variant="ghost">
+                <PanelLeftCloseIcon />
+              </Button>
+            </div>
+          )}
         </div>
       </SidebarHeader>
 
