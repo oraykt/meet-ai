@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useForm } from 'react-hook-form';
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -14,30 +14,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Alert, AlertTitle } from '@/components/ui/alert';
-import { OctagonAlertIcon } from 'lucide-react';
-import Link from 'next/link';
-import { authClient } from '@/lib/auth-client';
-import { useRouter } from 'next/navigation';
+} from "@/components/ui/form";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { OctagonAlertIcon } from "lucide-react";
+import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const formSchema = z
   .object({
-    name: z.string().min(1, { message: 'Name is required' }),
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(6, { message: 'Password should be at least 6 characters' }),
-    confirmPassword: z.string().min(6, { message: 'Confirm your password' }),
+    name: z.string().min(1, { message: "Name is required" }),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, { message: "Password should be at least 6 characters" }),
+    confirmPassword: z.string().min(6, { message: "Confirm your password" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword'],
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });
 
 export const SignUpViews = () => {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { name: '', email: '', password: '', confirmPassword: '' },
+    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
   });
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,13 +51,13 @@ export const SignUpViews = () => {
         name: values.name,
         email: values.email,
         password: values.password,
-        callbackURL: '/',
+        callbackURL: "/",
       },
       {
         onSuccess: () => {
           // TODO: Success toast
           setPending(false);
-          router.push('/');
+          router.push("/");
         },
         onError: ({ error }) => {
           setError(error.message);
@@ -67,14 +67,14 @@ export const SignUpViews = () => {
     );
   };
 
-  const onSocialSubmit = (provider: 'github' | 'google') => {
+  const onSocialSubmit = (provider: "github" | "google") => {
     setError(null);
     setPending(true);
 
     authClient.signIn.social(
       {
         provider,
-        callbackURL: '/',
+        callbackURL: "/",
       },
       {
         onSuccess: () => {
@@ -165,7 +165,7 @@ export const SignUpViews = () => {
 
               <div className="flex items-center justify-between gap-4 pt-2">
                 <Button type="submit" disabled={pending} className="px-4 py-2">
-                  {pending ? 'Creating...' : 'Create account'}
+                  {pending ? "Creating..." : "Create account"}
                 </Button>
 
                 <p>
@@ -194,7 +194,7 @@ export const SignUpViews = () => {
                   disabled={pending}
                   className="w-fit"
                   onClick={() => {
-                    onSocialSubmit('google');
+                    onSocialSubmit("google");
                   }}
                 >
                   <span className="w-5 h-5 inline-flex">
@@ -212,7 +212,7 @@ export const SignUpViews = () => {
                   disabled={pending}
                   className="w-fit"
                   onClick={() => {
-                    onSocialSubmit('github');
+                    onSocialSubmit("github");
                   }}
                 >
                   <span className="w-5 h-5 inline-flex">

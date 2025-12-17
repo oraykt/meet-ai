@@ -1,13 +1,13 @@
-'use client';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+"use client";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { useForm } from 'react-hook-form';
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -15,21 +15,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { OctagonAlertIcon } from 'lucide-react';
-import { Alert, AlertTitle } from '@/components/ui/alert';
-import Link from 'next/link';
-import { authClient } from '@/lib/auth-client';
+} from "@/components/ui/form";
+import { OctagonAlertIcon } from "lucide-react";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, { message: 'Password is required' }),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, { message: "Password is required" }),
 });
 
 export const SignInViews = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: "", password: "" },
   });
   const [pending, setPending] = useState(false);
   const [remember, setRemember] = useState(false);
@@ -39,7 +39,7 @@ export const SignInViews = () => {
     setPending(true);
 
     authClient.signIn.email(
-      { email: values.email, password: values.password, callbackURL: '/dashboard' },
+      { email: values.email, password: values.password, callbackURL: "/dashboard" },
       {
         onSuccess: () => {
           // TODO: Success toast
@@ -52,14 +52,14 @@ export const SignInViews = () => {
     );
   };
 
-  const onSocialSubmit = (provider: 'github' | 'google' | 'facebook') => {
+  const onSocialSubmit = (provider: "github" | "google" | "facebook") => {
     setError(null);
     setPending(true);
 
     authClient.signIn.social(
       {
         provider,
-        callbackURL: '/dashboard',
+        callbackURL: "/dashboard",
       },
       {
         onSuccess: () => {
@@ -126,7 +126,7 @@ export const SignInViews = () => {
 
               <div className="flex items-center justify-between gap-4 pt-2">
                 <Button type="submit" disabled={pending} className="px-4 py-2">
-                  {pending ? 'Signing in...' : 'Sign in'}
+                  {pending ? "Signing in..." : "Sign in"}
                 </Button>
 
                 <Link href="/sign-up" className="text-sm text-gray-600 hover:underline">
@@ -153,7 +153,7 @@ export const SignInViews = () => {
                   disabled={pending}
                   className="w-fit"
                   onClick={() => {
-                    onSocialSubmit('google');
+                    onSocialSubmit("google");
                   }}
                 >
                   <span className="w-5 h-5 inline-flex">
@@ -171,7 +171,7 @@ export const SignInViews = () => {
                   disabled={pending}
                   className="w-fit"
                   onClick={() => {
-                    onSocialSubmit('github');
+                    onSocialSubmit("github");
                   }}
                 >
                   <span className="w-5 h-5 inline-flex">
