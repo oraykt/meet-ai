@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { authClient } from '@/lib/auth-client';
-import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export const DashboardView = () => {
   const router = useRouter();
@@ -86,7 +86,7 @@ export const DashboardView = () => {
           onClick={() =>
             authClient.signOut({
               fetchOptions: {
-                onSuccess: () => router.push('/sign-in'),
+                onSuccess: () => router.push("/sign-in"),
               },
             })
           }
