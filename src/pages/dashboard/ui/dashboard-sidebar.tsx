@@ -24,12 +24,12 @@ export function DashboardSidebar() {
 
   const navItems = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Summaries", href: "/dashboard/summaries", icon: FileText },
+    { label: "Agents", href: "/dashboard/agents", icon: FileText },
     { label: "Settings", href: "/dashboard/settings", icon: Settings },
   ];
   const secItems = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Summaries", href: "/dashboard/summaries", icon: FileText },
+    { label: "Agents", href: "/dashboard/agents", icon: FileText },
     { label: "Settings", href: "/dashboard/settings", icon: Settings },
   ];
 
