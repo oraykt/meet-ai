@@ -1,7 +1,6 @@
 "use client";
 
-import { ErrorState } from "@/components/error-state";
-import { LoadingState } from "@/components/loading-state";
+import { ResponsiveDialog } from "@/components/responsive-dialog";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
@@ -10,14 +9,14 @@ export const AgentsView = () => {
   const { data } = useSuspenseQuery(trpc.agents.getMany.queryOptions());
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Agents</h1>
-      <ul>
-        {data?.map((agent) => (
-          <li key={agent.id} className="mb-2 p-4 border rounded">
-            <h2 className="text-xl font-semibold">{agent.name}</h2>
-          </li>
-        ))}
-      </ul>
+      <ResponsiveDialog
+        open={false}
+        onOpenChange={() => {}}
+        title="Test Dialog"
+        description="This is a responsive dialog"
+      >
+        <p>This is a responsive dialog content.</p>
+      </ResponsiveDialog>
     </div>
   );
 };
