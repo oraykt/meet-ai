@@ -124,19 +124,19 @@
 
 /* Gradient backgrounds */
 .gradient-blue {
-  @apply bg-gradient-to-br from-blue-50 to-blue-100;
+  @apply bg-linear-to-br from-blue-50 to-blue-100;
 }
 
 .gradient-blue-dark {
-  @apply dark:bg-gradient-to-br dark:from-blue-950 dark:to-blue-900;
+  @apply dark:bg-linear-to-br dark:from-blue-950 dark:to-blue-900;
 }
 
 .gradient-auth {
-  @apply bg-gradient-to-br from-slate-50 via-white to-slate-50;
+  @apply bg-linear-to-br from-slate-50 via-white to-slate-50;
 }
 
 .gradient-auth-dark {
-  @apply dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950;
+  @apply dark:bg-linear-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950;
 }
 
 @layer base {
