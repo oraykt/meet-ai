@@ -74,9 +74,11 @@ const formSchema = z
   });
 ```
 
-## Implemented Pages
+#### Dashboard & Agents
 
-- **Dashboard & Agents:** The Dashboard and Agents pages are implemented (see `src/app/dashboard` and related agents routes). These pages provide an interface for managing agents and viewing dashboard data within the app.
+The Dashboard and Agents pages are implemented (see `src/app/dashboard` and related agents routes). These pages provide an interface for managing agents and viewing dashboard data within the app.
+
+#### Responsive Layout
 
 - **Responsive Layout:** A responsive layout pattern is used to adapt the UI for mobile and desktop. The app uses the `useIsMobile` hook to switch UI components (for example, Drawer on mobile and Dialog on desktop) to improve usability across screen sizes.
 
