@@ -29,6 +29,10 @@ export const CommandSelect = ({
 }: Props) => {
   const [open, setOpen] = useState(false);
   const selectedOption = options.find((option) => option.value === value);
+  const handleOpenChange = (open: boolean) => {
+    onSearch?.("");
+    setOpen(open);
+  };
   return (
     <>
       <Button
@@ -44,19 +48,24 @@ export const CommandSelect = ({
         <div>{selectedOption?.children ?? placeholder}</div>
         <ChevronsUpDownIcon />
       </Button>
-      <CommandResponsiveDialog open={open} onOpenChange={setOpen} shouldFilter={!onSearch}>
+      <CommandResponsiveDialog open={open} onOpenChange={handleOpenChange} shouldFilter={!onSearch}>
         <CommandInput placeholder="Search..." onValueChange={onSearch} />
-        {options.map((option) => (
-          <CommandItem
-            key={option.id}
-            onSelect={() => {
-              onSelect(option.value);
-              setOpen(false);
-            }}
-          >
-            {option.children}
-          </CommandItem>
-        ))}
+        {options.map((option) => {
+          console.log("Option: ", option);
+          return (
+            <CommandItem
+              value={option.value}
+              key={option.id}
+              onSelect={() => {
+                onSelect(option.value);
+                setOpen(false);
+              }}
+            >
+              {option.children}
+            </CommandItem>
+          );
+        })}
+
         <CommandEmpty>
           <span className="text-muted-foreground text-sm">No options found</span>
         </CommandEmpty>
