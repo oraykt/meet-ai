@@ -2,7 +2,7 @@ import { useTRPC } from "@/trpc/client";
 import { AgentGetOne } from "../types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { agentsInstanceSchema } from "../schemas";
+import { agentInsertSchema, agentsUpdateSchema } from "../schemas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
@@ -25,6 +25,20 @@ export const AgentForm = ({ onSuccess, onCancel, initialValues }: AgentFormProps
     trpc.agents.create.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions({}));
+        // TODO: Invalidate free tier usage
+        onSuccess?.();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+        // TODO: Check if error code is "FORBIDDEN", redirect to "/upgrade?"
+      },
+    })
+  );
+
+  const updateAgent = useMutation(
+    trpc.agents.update.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions({}));
         if (initialValues?.id) {
           await queryClient.invalidateQueries(
             trpc.agents.getOne.queryOptions({ id: initialValues.id })
@@ -38,8 +52,9 @@ export const AgentForm = ({ onSuccess, onCancel, initialValues }: AgentFormProps
       },
     })
   );
-  const form = useForm<z.infer<typeof agentsInstanceSchema>>({
-    resolver: zodResolver(agentsInstanceSchema),
+
+  const form = useForm<z.infer<typeof agentInsertSchema>>({
+    resolver: zodResolver(agentInsertSchema),
     defaultValues: {
       name: initialValues?.name ?? "",
       instructions: initialValues?.instructions ?? "",
@@ -48,10 +63,10 @@ export const AgentForm = ({ onSuccess, onCancel, initialValues }: AgentFormProps
 
   // Determine if the client is editing
   const isEdit = !!initialValues?.id;
-  const isPending = createAgent.isPending;
-  const onSubmit = (formValue: z.infer<typeof agentsInstanceSchema>) => {
+  const isPending = createAgent.isPending || updateAgent.isPending;
+  const onSubmit = (formValue: z.infer<typeof agentInsertSchema | typeof agentsUpdateSchema>) => {
     if (isEdit) {
-      console.log("TODO: Update Agent");
+      updateAgent.mutate({ ...formValue, id: initialValues.id });
     } else {
       createAgent.mutate(formValue);
     }

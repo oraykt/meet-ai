@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { agents } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
-import { agentsInstanceSchema } from "../schemas";
+import { agentInsertSchema, agentsUpdateSchema } from "../schemas";
 import { z } from "zod";
 import { and, count, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@/constants";
@@ -9,7 +9,9 @@ import { TRPCError } from "@trpc/server";
 // import { TRPCError } from "@trpc/server";
 
 export const agentsRouter = createTRPCRouter({
-  // TODO: Change `getOne` to use protectedProcedure
+  // Fully audited & secured way to provide CRUD operations via TRPC
+  // use protectedProcedure
+
   getOne: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ input, ctx }) => {
     const {
       auth: {
@@ -80,8 +82,7 @@ export const agentsRouter = createTRPCRouter({
       };
     }),
 
-  // Fully audited & secured way to provide Create operation via TRPC
-  create: protectedProcedure.input(agentsInstanceSchema).mutation(async ({ input, ctx }) => {
+  create: protectedProcedure.input(agentInsertSchema).mutation(async ({ input, ctx }) => {
     const { name, instructions } = input;
     const {
       auth: {
@@ -97,5 +98,40 @@ export const agentsRouter = createTRPCRouter({
       })
       .returning();
     return createdAgent;
+  }),
+
+  remove: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const [removedAgent] = await db
+        .delete(agents)
+        .where(and(eq(agents.id, input.id), eq(agents.userId, ctx.auth.user.id)))
+        .returning();
+
+      if (!removedAgent) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Agent not found",
+        });
+      }
+
+      return removedAgent;
+    }),
+
+  update: protectedProcedure.input(agentsUpdateSchema).mutation(async ({ ctx, input }) => {
+    const [updatedAgent] = await db
+      .update(agents)
+      .set(input)
+      .where(and(eq(agents.id, input.id), eq(agents.userId, ctx.auth.user.id)))
+      .returning();
+    if (!updatedAgent) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Agent not found",
+      });
+    }
+    console.log("Agent Updated");
+
+    return updatedAgent;
   }),
 });
