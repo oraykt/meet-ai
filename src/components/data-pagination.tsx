@@ -22,6 +22,7 @@ interface Props {
 export const DataPagination = ({
   page,
   totalPages,
+  total,
   pageSize,
   onPageChange,
   onPageSizeChange,
@@ -29,7 +30,7 @@ export const DataPagination = ({
   return (
     <div className="flex items-center justify-between">
       <div className="flex-1 text-sm text-muted-foreground">
-        Page {page} of {totalPages || 1}
+        Page {page} of {totalPages || 1} (in {total})
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
