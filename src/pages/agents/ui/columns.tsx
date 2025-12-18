@@ -6,6 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CornerDownRightIcon, VideoIcon } from "lucide-react";
 
 export type Agent = {
+  id: string;
   name: string;
   instructions: string;
   meetingCount: number;

@@ -1,26 +1,31 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import DashboardLayout from "@/app/(dashboard)/layout";
 import { authClient } from "@/lib/auth-client";
-import { HomeView } from "@/pages/home/ui/home-view";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export const DashboardView = () => {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
+
+  useEffect(() => {
+    if (!isPending && !session?.user) {
+      router.push("/sign-in");
+    }
+  }, [session, isPending, router]);
 
   if (isPending) {
     return <div>Loading...</div>;
   }
 
   if (!session?.user) {
-    router.push("/sign-in");
+    return null;
   }
 
   return (
-    <div>
-      <HomeView />
-    </div>
+    <DashboardLayout>
+      <div>Home View</div>
+    </DashboardLayout>
   );
 };
