@@ -5,7 +5,7 @@ interface Props {
   description?: string;
 }
 
-export const ErrorState = ({ title = "Error!", description }: Props) => {
+export const ErrorState = ({ title = "Error!", description = "Something went wrong!" }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center p-4">
       <AlertCircleIcon className="size-6 text-red-600" />

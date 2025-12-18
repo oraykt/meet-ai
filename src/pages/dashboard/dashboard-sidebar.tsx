@@ -12,7 +12,13 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { LayoutDashboard, FileText, Settings, PanelLeftCloseIcon } from "lucide-react";
+import {
+  LayoutDashboard,
+  FileText,
+  Settings,
+  PanelLeftCloseIcon,
+  PhoneCallIcon,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
@@ -25,6 +31,7 @@ export function DashboardSidebar() {
   const navItems = [
     { label: "Dashboard", href: "/", icon: LayoutDashboard },
     { label: "Agents", href: "/agents", icon: FileText },
+    { label: "Meetings", href: "/meetings", icon: PhoneCallIcon },
     { label: "Settings", href: "/settings", icon: Settings },
   ];
   const secItems = [
