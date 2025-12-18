@@ -1,4 +1,5 @@
 import { ErrorState } from "@/components/error-state";
+import { LoadingState } from "@/components/loading-state";
 import { AgentViewById } from "@/pages/agents/ui/agent-view-by-id";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -16,7 +17,7 @@ const Page = async ({ params }: Props) => {
   void queryClient.prefetchQuery(trpc.agents.getOne.queryOptions({ id: agentId }));
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense>
+      <Suspense fallback={<LoadingState />}>
         <ErrorBoundary fallback={<ErrorState />}>
           <AgentViewById agentId={agentId} />
         </ErrorBoundary>

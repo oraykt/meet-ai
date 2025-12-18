@@ -1,4 +1,4 @@
-import SignInViews from "@/pages/auth/ui/sign-in-views";
+import SignInViews from "@/pages/auth/sign-in-views";
 
 const Page = () => {
   return <SignInViews />;
