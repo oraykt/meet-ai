@@ -5,6 +5,7 @@ import { z } from "zod";
 import { and, count, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@/constants";
 import { TRPCError } from "@trpc/server";
+import { meetingInsertSchema, meetingUpdateSchema } from "../schemas";
 // import { TRPCError } from "@trpc/server";
 
 export const meetingsRouter = createTRPCRouter({
@@ -80,23 +81,25 @@ export const meetingsRouter = createTRPCRouter({
       };
     }),
 
-  // create: protectedProcedure.input(agentInsertSchema).mutation(async ({ input, ctx }) => {
-  //   const { name, instructions } = input;
-  //   const {
-  //     auth: {
-  //       user: { id: userId },
-  //     },
-  //   } = ctx;
-  //   const [createdAgent] = await db
-  //     .insert(agents)
-  //     .values({
-  //       name,
-  //       instructions,
-  //       userId,
-  //     })
-  //     .returning();
-  //   return createdAgent;
-  // }),
+  create: protectedProcedure.input(meetingInsertSchema).mutation(async ({ input, ctx }) => {
+    const { name, agentId } = input;
+    const {
+      auth: {
+        user: { id: userId },
+      },
+    } = ctx;
+    const [createdMeeting] = await db
+      .insert(meetings)
+      .values({
+        name,
+        agentId,
+        userId,
+      })
+      .returning();
+
+    // TODO: Create Stream Call, Upsert Stream Users
+    return createdMeeting;
+  }),
 
   // remove: protectedProcedure
   //   .input(z.object({ id: z.string() }))
@@ -116,20 +119,19 @@ export const meetingsRouter = createTRPCRouter({
   //     return removedAgent;
   //   }),
 
-  // update: protectedProcedure.input(agentsUpdateSchema).mutation(async ({ ctx, input }) => {
-  //   const [updatedAgent] = await db
-  //     .update(agents)
-  //     .set(input)
-  //     .where(and(eq(agents.id, input.id), eq(agents.userId, ctx.auth.user.id)))
-  //     .returning();
-  //   if (!updatedAgent) {
-  //     throw new TRPCError({
-  //       code: "NOT_FOUND",
-  //       message: "Agent not found",
-  //     });
-  //   }
-  //   console.log("Agent Updated");
+  update: protectedProcedure.input(meetingUpdateSchema).mutation(async ({ ctx, input }) => {
+    const [updatedMeeting] = await db
+      .update(meetings)
+      .set(input)
+      .where(and(eq(meetings.id, input.id), eq(meetings.userId, ctx.auth.user.id)))
+      .returning();
+    if (!updatedMeeting) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Meeting not found",
+      });
+    }
 
-  //   return updatedAgent;
-  // }),
+    return updatedMeeting;
+  }),
 });

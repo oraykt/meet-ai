@@ -71,23 +71,28 @@ function CommandResponsiveDialog({
   children,
   className,
   showCloseButton = true,
+  shouldFilter = true,
   ...props
 }: React.ComponentProps<typeof Dialog> & {
   title?: string;
   description?: string;
   className?: string;
   showCloseButton?: boolean;
+  shouldFilter?: boolean;
 }) {
   const isMobile = useIsMobile();
   if (isMobile) {
     return (
       <Drawer {...props}>
-        <DrawerContent className="overflow-hidden p-0">
+        <DrawerContent className="overflow-hidden p-4 rounded-xl">
           <DrawerHeader className="sr-only">
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
-          <Command className="**[cmdk-group-heading]:text-muted-foreground **data-[slot=command-input-wrapper]:h-12 **[cmdk-group-heading]:px-2 **[cmdk-group-heading]:font-medium **[cmdk-group]:px-2 **[cmdk-group]:not([hidden])~[cmdk-group]:pt-0 **[cmdk-input-wrapper]_svg]:h-5 **[cmdk-input-wrapper]_svg]:w-5 **[cmdk-input]:h-12 **[cmdk-item]:px-2 **[cmdk-item]:py-3 **[cmdk-item]_svg]:h-5 **[cmdk-item]_svg]:w-5">
+          <Command
+            shouldFilter
+            className="**[cmdk-group-heading]:text-muted-foreground **data-[slot=command-input-wrapper]:h-12 **[cmdk-group-heading]:px-2 **[cmdk-group-heading]:font-medium **[cmdk-group]:px-2 **[cmdk-group]:not([hidden])~[cmdk-group]:pt-0 **[cmdk-input-wrapper]_svg]:h-5 **[cmdk-input-wrapper]_svg]:w-5 **[cmdk-input]:h-12 **[cmdk-item]:px-2 **[cmdk-item]:py-3 **[cmdk-item]_svg]:h-5 **[cmdk-item]_svg]:w-5"
+          >
             {children}
           </Command>
         </DrawerContent>
@@ -102,10 +107,13 @@ function CommandResponsiveDialog({
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
       <DialogContent
-        className={cn("overflow-hidden p-0", className)}
+        className={cn("overflow-hidden p-4 rounded-xl", className)}
         showCloseButton={showCloseButton}
       >
-        <Command className="**[cmdk-group-heading]:text-muted-foreground **data-[slot=command-input-wrapper]:h-12 **[cmdk-group-heading]:px-2 **[cmdk-group-heading]:font-medium **[cmdk-group]:px-2 **[cmdk-group]:not([hidden])~[cmdk-group]:pt-0 **[cmdk-input-wrapper]_svg]:h-5 **[cmdk-input-wrapper]_svg]:w-5 **[cmdk-input]:h-12 **[cmdk-item]:px-2 **[cmdk-item]:py-3 **[cmdk-item]_svg]:h-5 **[cmdk-item]_svg]:w-5">
+        <Command
+          shouldFilter
+          className="**[cmdk-group-heading]:text-muted-foreground **data-[slot=command-input-wrapper]:h-12 **[cmdk-group-heading]:px-2 **[cmdk-group-heading]:font-medium **[cmdk-group]:px-2 **[cmdk-group]:not([hidden])~[cmdk-group]:pt-0 **[cmdk-input-wrapper]_svg]:h-5 **[cmdk-input-wrapper]_svg]:w-5 **[cmdk-input]:h-12 **[cmdk-item]:px-2 **[cmdk-item]:py-3 **[cmdk-item]_svg]:h-5 **[cmdk-item]_svg]:w-5"
+        >
           {children}
         </Command>
       </DialogContent>
