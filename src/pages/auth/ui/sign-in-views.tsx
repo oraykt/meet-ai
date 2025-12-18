@@ -39,7 +39,7 @@ export const SignInViews = () => {
     setPending(true);
 
     authClient.signIn.email(
-      { email: values.email, password: values.password, callbackURL: "/dashboard" },
+      { email: values.email, password: values.password, callbackURL: "/" },
       {
         onSuccess: () => {
           // TODO: Success toast
@@ -59,7 +59,7 @@ export const SignInViews = () => {
     authClient.signIn.social(
       {
         provider,
-        callbackURL: "/dashboard",
+        callbackURL: "/",
       },
       {
         onSuccess: () => {

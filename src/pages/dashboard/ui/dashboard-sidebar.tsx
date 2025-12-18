@@ -23,14 +23,14 @@ export function DashboardSidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Agents", href: "/dashboard/agents", icon: FileText },
-    { label: "Settings", href: "/dashboard/settings", icon: Settings },
+    { label: "Dashboard", href: "/", icon: LayoutDashboard },
+    { label: "Agents", href: "/agents", icon: FileText },
+    { label: "Settings", href: "/settings", icon: Settings },
   ];
   const secItems = [
-    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Agents", href: "/dashboard/agents", icon: FileText },
-    { label: "Settings", href: "/dashboard/settings", icon: Settings },
+    { label: "Dashboard", href: "/", icon: LayoutDashboard },
+    { label: "Agents", href: "/agents", icon: FileText },
+    { label: "Settings", href: "/settings", icon: Settings },
   ];
 
   return (
