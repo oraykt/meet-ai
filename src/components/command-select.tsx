@@ -51,7 +51,6 @@ export const CommandSelect = ({
       <CommandResponsiveDialog open={open} onOpenChange={handleOpenChange} shouldFilter={!onSearch}>
         <CommandInput placeholder="Search..." onValueChange={onSearch} />
         {options.map((option) => {
-          console.log("Option: ", option);
           return (
             <CommandItem
               value={option.value}
@@ -60,6 +59,7 @@ export const CommandSelect = ({
                 onSelect(option.value);
                 setOpen(false);
               }}
+              className="p-2"
             >
               {option.children}
             </CommandItem>

@@ -10,8 +10,9 @@ import {
   ClockFadingIcon,
   CornerDownRightIcon,
   LoaderIcon,
+  LucideIcon,
 } from "lucide-react";
-import { MeetingGetMany } from "../types";
+import { MeetingGetMany, MeetingStatus } from "../types";
 import humanizeDuration from "humanize-duration";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -24,21 +25,38 @@ function formatDuration(seconds: number) {
   });
 }
 
-const statusIconMap = {
-  upcoming: ClockArrowUpIcon,
-  active: LoaderIcon,
-  completed: CircleCheckIcon,
-  processing: LoaderIcon,
-  cancelled: CircleXIcon,
+export const statusIconMap: Record<MeetingStatus, LucideIcon> = {
+  [MeetingStatus.UPCOMING]: ClockArrowUpIcon,
+  [MeetingStatus.ACTIVE]: LoaderIcon,
+  [MeetingStatus.COMPLETED]: CircleCheckIcon,
+  [MeetingStatus.PROCESSING]: LoaderIcon,
+  [MeetingStatus.CANCELLED]: CircleXIcon,
 };
 
-const statusColorMap = {
-  upcoming: "bg-yellow-500/20 text-yellow-800 border-yellow-800/5",
-  active: "bg-blue-500/20 text-blue-800 border-blue-800/5",
-  completed: "bg-emerald-500/20 text-emerald-800 border-emerald-800/5",
-  processing: "bg-gray-300/20 text-gray-800 border-gray-800/5",
-  cancelled: "bg-rose-500/20 text-rose-800 border-rose-800/5",
+export const renderStatus = (status: MeetingStatus) => {
+  const Icon = statusIconMap[status];
+  return <Icon className={cn("size-4", status === MeetingStatus.PROCESSING && "animate-spin")} />;
 };
+
+export const statusColorMap: Record<MeetingStatus, string> = {
+  [MeetingStatus.UPCOMING]: "bg-yellow-500/20 text-yellow-800 border-yellow-800/5",
+  [MeetingStatus.ACTIVE]: "bg-blue-500/20 text-blue-800 border-blue-800/5",
+  [MeetingStatus.COMPLETED]: "bg-emerald-500/20 text-emerald-800 border-emerald-800/5",
+  [MeetingStatus.PROCESSING]: "bg-gray-300/20 text-gray-800 border-gray-800/5",
+  [MeetingStatus.CANCELLED]: "bg-rose-500/20 text-rose-800 border-rose-800/5",
+};
+
+export const renderStatusOption = (status: MeetingStatus) => (
+  <div
+    className={cn(
+      "flex items-center gap-x-2 capitalize rounded-md px-2 py-1",
+      statusColorMap[status]
+    )}
+  >
+    {renderStatus(status)}
+    {status}
+  </div>
+);
 
 export const meetingsColumns: ColumnDef<MeetingGetMany[number]>[] = [
   {
@@ -70,16 +88,15 @@ export const meetingsColumns: ColumnDef<MeetingGetMany[number]>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const Icon = statusIconMap[row.original.status as keyof typeof statusIconMap];
       return (
         <Badge
           variant="outline"
           className={cn(
             "capitalize [&>svg]:size-4 text-muted-foreground",
-            statusColorMap[row.original.status as keyof typeof statusColorMap]
+            statusColorMap[row.original.status]
           )}
         >
-          <Icon className={cn(row.original.status === "processing" && "animate-spin")} />
+          {renderStatus(row.original.status as keyof typeof statusIconMap)}
           {row.original.status}
         </Badge>
       );

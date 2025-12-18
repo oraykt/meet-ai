@@ -73,7 +73,6 @@ export const agentsRouter = createTRPCRouter({
       //   code: "NOT_FOUND",
       //   message: "Test error from agentsRouter.getMany",
       // });
-      console.log(`${data.length} Agents found`);
       return {
         items: data,
         page,
