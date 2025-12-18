@@ -8,7 +8,7 @@ import { CornerDownRightIcon, VideoIcon } from "lucide-react";
 export type Agent = {
   name: string;
   instructions: string;
-  meetingCount?: number;
+  meetingCount: number;
 };
 
 export const columns: ColumnDef<Agent>[] = [
@@ -36,7 +36,9 @@ export const columns: ColumnDef<Agent>[] = [
     cell: ({ row }) => (
       <Badge variant="outline" className="flex items-center gap-x-2 [&>svg]:size-4">
         <VideoIcon className="text-blue-600" />
-        <span>5 {row.original.meetingCount === 1 ? "meeting" : "meetings"}</span>
+        <span>
+          {row.original.meetingCount} {row.original.meetingCount === 1 ? "meeting" : "meetings"}
+        </span>
       </Badge>
     ),
   },
