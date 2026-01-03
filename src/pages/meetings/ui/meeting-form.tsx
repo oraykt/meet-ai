@@ -78,7 +78,7 @@ export const MeetingForm = ({ onSuccess, onCancel, initialValues }: MeetingFormP
             trpc.meetings.getOne.queryOptions({ id: initialValues.id })
           );
         }
-        onSuccess?.();
+        onSuccess?.(initialValues?.id);
       },
       onError: (error) => {
         toast.error(error.message);
