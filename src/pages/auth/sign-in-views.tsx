@@ -20,6 +20,7 @@ import { OctagonAlertIcon } from "lucide-react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -45,6 +46,8 @@ export const SignInViews = () => {
           // TODO: Success toast
         },
         onError: ({ error }) => {
+          const statusText = [error.status, error.statusText].filter(Boolean).join(" ");
+          toast.error(statusText ? `${statusText}: ${error.message}` : error.message);
           setError(error.message);
           setPending(false);
         },
@@ -66,6 +69,7 @@ export const SignInViews = () => {
           // TODO: Success toast
         },
         onError: ({ error }) => {
+          toast.error(error.statusText ? error.statusText : error.message);
           setError(error.message);
           setPending(false);
         },

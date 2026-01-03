@@ -8,7 +8,7 @@ import { MeetingsSearchFilter } from "./meetings-search-filter";
 import { DEFAULT_PAGE } from "@/constants";
 import { useMeetingsFilter } from "./hooks/use-meetings-filters";
 import { MeetingsStatusFilter } from "./status-filter";
-import { AgentIdFilter } from "./agent-id-filter";
+import { AgentIdFilter } from "./meetings-agent-filter";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ScrollBar } from "@/components/ui/scroll-area";
 export const MeetingsListHeader = () => {
