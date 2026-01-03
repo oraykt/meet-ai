@@ -36,7 +36,6 @@ const Page = async ({ params }: Props) => {
       </Suspense>
     </HydrationBoundary>
   );
-  return <>Hello World</>;
 };
 
 export default Page;
