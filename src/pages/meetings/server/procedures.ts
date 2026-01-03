@@ -30,7 +30,7 @@ export const meetingsRouter = createTRPCRouter({
       .where(and(eq(meetings.id, input.id), eq(meetings.userId, authorizedUserId)));
 
     if (!existingMeeting) {
-      throw new TRPCError({ code: "NOT_FOUND", message: `Agent not found` });
+      throw new TRPCError({ code: "NOT_FOUND", message: `Meeting not found` });
     }
     return existingMeeting;
   }),

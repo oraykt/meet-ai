@@ -3,7 +3,6 @@ import { ErrorState } from "@/components/error-state";
 import { LoadingState } from "@/components/loading-state";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-// import { MeetingViewbyIdHeader } from "./Meeting-view-by-id-header";
 import { GeneratedAvatar } from "@/components/generated-avatar";
 import { Badge } from "@/components/ui/badge";
 import { VideoIcon } from "lucide-react";
@@ -13,7 +12,6 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { useState } from "react";
 import { MeetingViewByIdHeader } from "./meeting-view-by-id-header";
 import { UpdateMeetingDialog } from "./update-meetings-dialog";
-// import { UpdateMeetingDialog } from "./update-meeting-dialog";
 
 interface Props {
   meetingId: string;
@@ -31,7 +29,7 @@ export const MeetingViewById = ({ meetingId }: Props) => {
     return <LoadingState title="Meeting is loading..." />;
   }
   if (isError) {
-    <ErrorState title="Error loading meeting" description="Something went wrong" />;
+    return <ErrorState title="Error loading meeting" description="Something went wrong" />;
   }
 
   const removeMeeting = useMutation(

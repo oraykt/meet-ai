@@ -46,8 +46,7 @@ export const SignInViews = () => {
           // TODO: Success toast
         },
         onError: ({ error }) => {
-          const statusText = [error.status, error.statusText].filter(Boolean).join(" ");
-          toast.error(statusText ? `${statusText}: ${error.message}` : error.message);
+          toast.error(error.statusText ? error.statusText : error.message);
           setError(error.message);
           setPending(false);
         },
