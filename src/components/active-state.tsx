@@ -13,7 +13,7 @@ export const ActiveState = ({ meetingId }: ActiveStateProps) => {
       <EmptyState
         title="Meeting is active"
         description="Meeting will end once all participants have left."
-        imageUrl="/empty.svg"
+        imageUrl="/upcoming.svg"
       />
       <div className="flex flex-col-reverse lg:flex-row lg:justify-center items-center gap-2 w-fit">
         <Button asChild className="w-full lg:w-auto">
