@@ -93,9 +93,11 @@ export const MeetingViewById = ({ meetingId }: Props) => {
         )}
         {isCancelled && <CancelledState />}
         {isCompleted && (
-          <Badge variant="secondary" className="w-fit">
-            Completed
-          </Badge>
+          <div className="rounded-lg bg-white p-6">
+            <Badge variant="secondary" className="w-fit">
+              Completed
+            </Badge>
+          </div>
         )}
         {isProcessing && <ProcessingState />}
       </div>
