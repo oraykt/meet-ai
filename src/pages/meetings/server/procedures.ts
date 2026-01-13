@@ -7,12 +7,31 @@ import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@
 import { TRPCError } from "@trpc/server";
 import { meetingInsertSchema, meetingUpdateSchema } from "../schemas";
 import { MeetingStatus } from "../types";
-// import { TRPCError } from "@trpc/server";
+import { streamVideo } from "@/lib/stream-video";
+import { generateAvatarUri } from "@/lib/avatar";
 
 export const meetingsRouter = createTRPCRouter({
-  // Fully audited & secured way to provide CRUD operations via TRPC
-  // use protectedProcedure
+  generateToken: protectedProcedure.mutation(async ({ ctx }) => {
+    await streamVideo.upsertUsers([
+      {
+        id: ctx.auth.user.id,
+        name: ctx.auth.user.name,
+        role: "admin",
+        image:
+          ctx.auth.user.image ??
+          generateAvatarUri({
+            seed: ctx.auth.user.name || ctx.auth.user.email || "user",
+            variant: "initials",
+          }),
+      },
+    ]);
+    const token = streamVideo.generateUserToken({
+      user_id: ctx.auth.user.id,
+    });
+    return token;
+  }),
 
+  // Fully audited & secured way to provide CRUD operations via TRPC
   getOne: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ input, ctx }) => {
     const {
       auth: {
@@ -118,7 +137,47 @@ export const meetingsRouter = createTRPCRouter({
       })
       .returning();
 
-    // TODO: Create Stream Call, Upsert Stream Users
+    const call = streamVideo.video.call("default", createdMeeting.id);
+    await call.create({
+      data: {
+        created_by_id: ctx.auth.user.id,
+        custom: {
+          meetingId: createdMeeting.id,
+          meetingName: createdMeeting.name,
+        },
+        settings_override: {
+          transcription: {
+            language: "en",
+            mode: "auto-on",
+            closed_caption_mode: "auto-on",
+          },
+          recording: {
+            mode: "auto-on",
+            quality: "1080p",
+          },
+        },
+      },
+    });
+
+    const [existingAgent] = await db.select().from(agents).where(eq(agents.id, agentId));
+    if (!existingAgent) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Agent not found",
+      });
+    }
+
+    await streamVideo.upsertUsers([
+      {
+        id: existingAgent.userId,
+        name: existingAgent.name,
+        role: "user",
+        image: generateAvatarUri({
+          seed: existingAgent.name,
+          variant: "botttsNeutral",
+        }),
+      },
+    ]);
     return createdMeeting;
   }),
 
