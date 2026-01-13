@@ -17,11 +17,13 @@ export const CallUI = ({ meetingName }: Props) => {
   const handleJoin = async () => {
     if (!call) return;
     try {
-      await call.join();
+      // Check if call is already joined
+      if (call.state.callingState !== "joined") {
+        await call.join();
+      }
       setShow("call");
     } catch (error) {
       console.error("Failed to join the call:", error);
-      alert("Failed to join the call. Please try again.");
     }
   };
 
