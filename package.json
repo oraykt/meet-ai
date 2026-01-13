@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:webhook": "ngrok http --url=pseudonymous-vinita-lusciously.ngrok-free.dev 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -42,6 +43,7 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@stream-io/node-sdk": "^0.7.33",
+    "@stream-io/openai-realtime-api": "^0.3.3",
     "@stream-io/video-react-sdk": "^1.31.0",
     "@tanstack/react-query": "^5.66.3",
     "@tanstack/react-table": "^8.21.3",
