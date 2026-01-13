@@ -60,11 +60,36 @@ export const MeetingViewById = ({ meetingId }: Props) => {
     await removeMeeting.mutateAsync({ id: meetingId });
   };
 
-  const isActive = data.status === "active";
-  const isUpcoming = data.status === "upcoming";
-  const isCancelled = data.status === "cancelled";
-  const isCompleted = data.status === "completed";
-  const isProcessing = data.status === "processing";
+  const renderStatusContent = () => {
+    switch (data.status) {
+      case "active":
+        return <ActiveState meetingId={meetingId} />;
+      case "upcoming":
+        return (
+          <UpcomingState
+            meetingId={meetingId}
+            onCancelMeeting={handleRemoveMeeting}
+            isCancelling={removeMeeting.isPending}
+          />
+        );
+      case "cancelled":
+        return <CancelledState />;
+      case "completed":
+        return (
+          <Badge variant="secondary" className="w-fit">
+            Completed
+          </Badge>
+        );
+      case "processing":
+        return <ProcessingState />;
+      default:
+        return (
+          <Badge variant="destructive" className="w-fit">
+            Unknown Status: {data.status}
+          </Badge>
+        );
+    }
+  };
 
   return (
     <>
@@ -83,21 +108,7 @@ export const MeetingViewById = ({ meetingId }: Props) => {
           }}
           onRemove={handleRemoveMeeting}
         />
-        {isActive && <ActiveState meetingId={meetingId} />}
-        {isUpcoming && (
-          <UpcomingState
-            meetingId={meetingId}
-            onCancelMeeting={handleRemoveMeeting}
-            isCancelling={removeMeeting.isPending}
-          />
-        )}
-        {isCancelled && <CancelledState />}
-        {isCompleted && (
-          <Badge variant="secondary" className="w-fit">
-            Completed
-          </Badge>
-        )}
-        {isProcessing && <ProcessingState />}
+        {renderStatusContent()}
       </div>
     </>
   );
