@@ -12,6 +12,10 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { useState } from "react";
 import { MeetingViewByIdHeader } from "./meeting-view-by-id-header";
 import { UpdateMeetingDialog } from "./update-meetings-dialog";
+import { UpcomingState } from "@/components/upcoming-state";
+import { ActiveState } from "@/components/active-state";
+import { CancelledState } from "@/components/cancelled-state";
+import { ProcessingState } from "@/components/processing-state";
 
 interface Props {
   meetingId: string;
@@ -55,6 +59,13 @@ export const MeetingViewById = ({ meetingId }: Props) => {
     if (!ok) return;
     await removeMeeting.mutateAsync({ id: meetingId });
   };
+
+  const isActive = data.status === "active";
+  const isUpcoming = data.status === "upcoming";
+  const isCancelled = data.status === "cancelled";
+  const isCompleted = data.status === "completed";
+  const isProcessing = data.status === "processing";
+
   return (
     <>
       <RemoveConfirmation />
@@ -72,21 +83,21 @@ export const MeetingViewById = ({ meetingId }: Props) => {
           }}
           onRemove={handleRemoveMeeting}
         />
-        <div className="rounded-lg border">
-          <div className="p-4 gap-y-5 flex flex-col col-span-5">
-            <div className="flex items-center gap-x-3">
-              <GeneratedAvatar variant="botttsNeutral" seed={data.name} className="size-10" />
-              <span className="text-2xl font-medium">{data.name}</span>
-            </div>
-            <Badge variant="outline" className="flex items-center gap-x-2 [&>svg]:size-4">
-              <VideoIcon className="text-blue-600" />
-            </Badge>
-
-            <div className="flex flex-col gap-y-4">
-              <p className="text-lg font-medium">Instructions</p>
-            </div>
-          </div>
-        </div>
+        {isActive && <ActiveState meetingId={meetingId} />}
+        {isUpcoming && (
+          <UpcomingState
+            meetingId={meetingId}
+            onCancelMeeting={handleRemoveMeeting}
+            isCancelling={removeMeeting.isPending}
+          />
+        )}
+        {isCancelled && <CancelledState />}
+        {isCompleted && (
+          <Badge variant="secondary" className="w-fit">
+            Completed
+          </Badge>
+        )}
+        {isProcessing && <ProcessingState />}
       </div>
     </>
   );
