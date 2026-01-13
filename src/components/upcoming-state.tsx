@@ -13,8 +13,8 @@ export const UpcomingState = ({ meetingId, onCancelMeeting, isCancelling }: Upco
   return (
     <div className="bg-white rounded-lg p-4 flex flex-col gap-y-8 items-center justify-center">
       <EmptyState
-        title="No upcoming meetings"
-        description="You have no meetings scheduled. Schedule a meeting to see it here."
+        title="Meeting scheduled"
+        description="Your meeting is scheduled and will start once you begin it."
         imageUrl="/upcoming.svg"
       />
       <div className="flex flex-col-reverse lg:flex-row lg:justify-center items-center gap-2 w-fit">
