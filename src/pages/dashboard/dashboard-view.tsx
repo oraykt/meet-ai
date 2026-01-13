@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardLayout from "@/app/(dashboard)/layout";
+import { LoadingState } from "@/components/loading-state";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -16,7 +17,7 @@ export const DashboardView = () => {
   }, [session, isPending, router]);
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <LoadingState />;
   }
 
   if (!session?.user) {
