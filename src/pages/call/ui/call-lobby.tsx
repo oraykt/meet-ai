@@ -3,7 +3,6 @@ import { authClient } from "@/lib/auth-client";
 import { generateAvatarUri } from "@/lib/avatar";
 import {
   DefaultVideoPlaceholder,
-  name,
   StreamVideoParticipant,
   ToggleAudioPreviewButton,
   ToggleVideoPreviewButton,
