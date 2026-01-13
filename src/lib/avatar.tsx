@@ -3,13 +3,13 @@ import { createAvatar } from "@dicebear/core";
 
 interface Props {
   seed: string;
-  variant: "bottsNeutral" | "initials";
+  variant: "botttsNeutral" | "initials";
 }
 
 export const generateAvatarUri = ({ seed, variant }: Props) => {
   let avatar;
   switch (variant) {
-    case "bottsNeutral":
+    case "botttsNeutral":
       avatar = createAvatar(botttsNeutral, {
         seed,
       });
