@@ -27,7 +27,7 @@ export const CompletedState = ({ data }: Props) => {
             <TabsList className="p-0 bg-background justify-start rounded-none h-13">
               <TabsTrigger
                 value="summary"
-                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=actiove]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
               >
                 <BookOpenTextIcon />
                 Summary
@@ -35,14 +35,14 @@ export const CompletedState = ({ data }: Props) => {
 
               <TabsTrigger
                 value="transcript"
-                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=actiove]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
               >
                 <FileTextIcon />
                 Transcript
               </TabsTrigger>
               <TabsTrigger
                 value="recording"
-                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=actiove]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
               >
                 <FileVideoIcon />
                 Recording
@@ -50,7 +50,7 @@ export const CompletedState = ({ data }: Props) => {
 
               <TabsTrigger
                 value="chat"
-                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=actiove]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                className="text-muted-foreground rounded-none bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
               >
                 <BrainIcon />
                 Ask AI
@@ -87,7 +87,7 @@ export const CompletedState = ({ data }: Props) => {
                 <BrainIcon className="size-4" />
                 <p>General Summary</p>
               </div>
-              <Badge variant="outline" className="flex items-center gap-x-2 [&>svg]:size-4">
+              <Badge variant="outline" className="flex items-center gap-x-2 [&>svg]:size-4 w-fit">
                 <ClockFadingIcon className="text-primary" />
                 {formatDuration(
                   { seconds: Math.round(data.duration) },
@@ -125,7 +125,7 @@ export const CompletedState = ({ data }: Props) => {
           <video src={data.recordingUrl!} className="w-full rounded-lg" controls></video>
         </TabsContent>
 
-        <TabsContent value="chat"></TabsContent>
+        <TabsContent value="chat">Chat with me</TabsContent>
       </Tabs>
     </div>
   );
