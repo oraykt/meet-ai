@@ -16,6 +16,7 @@ import { UpcomingState } from "@/components/upcoming-state";
 import { ActiveState } from "@/components/active-state";
 import { CancelledState } from "@/components/cancelled-state";
 import { ProcessingState } from "@/components/processing-state";
+import { CompletedState } from "@/components/completed-state";
 
 interface Props {
   meetingId: string;
@@ -75,11 +76,7 @@ export const MeetingViewById = ({ meetingId }: Props) => {
       case "cancelled":
         return <CancelledState />;
       case "completed":
-        return (
-          <Badge variant="secondary" className="w-fit">
-            Completed
-          </Badge>
-        );
+        return <CompletedState data={data} />;
       case "processing":
         return <ProcessingState />;
       default:
