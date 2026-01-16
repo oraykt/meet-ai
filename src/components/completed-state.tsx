@@ -1,6 +1,6 @@
 import { MeetingGetOne } from "@/pages/meetings/types";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
-import { ScrollArea } from "../../../components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { ScrollArea } from "./ui/scroll-area";
 import {
   BookOpenTextIcon,
   BrainIcon,
@@ -9,12 +9,10 @@ import {
   FileVideoIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { GeneratedAvatar } from "../../../components/generated-avatar";
-import { Badge } from "../../../components/ui/badge";
+import { GeneratedAvatar } from "./generated-avatar";
+import { Badge } from "./ui/badge";
 import { formatDuration } from "date-fns";
 import Markdown from "react-markdown";
-import { Transcript } from "@/pages/meetings/ui/transcript";
-import { ChatProvider } from "./chat-provider";
 
 interface Props {
   data: MeetingGetOne;
@@ -123,16 +121,11 @@ export const CompletedState = ({ data }: Props) => {
             </div>
           </div>
         </TabsContent>
-        <TabsContent value="transcript" className="bg-white rounded-lg border p-4">
-          <Transcript meetingId={data.id} />
-        </TabsContent>
         <TabsContent value="recording" className="bg-white rounded-lg border p-4">
           <video src={data.recordingUrl!} className="w-full rounded-lg" controls></video>
         </TabsContent>
 
-        <TabsContent value="chat">
-          <ChatProvider meetingId={data.id} meetingName={data.name} />
-        </TabsContent>
+        <TabsContent value="chat">Chat with me</TabsContent>
       </Tabs>
     </div>
   );
