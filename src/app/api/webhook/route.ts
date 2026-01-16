@@ -1,3 +1,5 @@
+import OpenAI from "openai";
+import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { and, eq, not } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import {
@@ -6,6 +8,7 @@ import {
   CallSessionParticipantLeftEvent,
   CallSessionStartedEvent,
   CallTranscriptionReadyEvent,
+  MessageNewEvent,
 } from "@stream-io/node-sdk";
 
 import { db } from "@/db";
