@@ -5,7 +5,6 @@ import { generateAvatarUri } from "@/lib/avatar";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { SearchIcon } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import Highlighter from "react-highlight-words";
 
