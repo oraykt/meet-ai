@@ -1,3 +1,5 @@
+import OpenAI from "openai";
+import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { and, eq, not } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import {
@@ -6,12 +8,19 @@ import {
   CallSessionParticipantLeftEvent,
   CallSessionStartedEvent,
   CallTranscriptionReadyEvent,
+  MessageNewEvent,
 } from "@stream-io/node-sdk";
 
 import { db } from "@/db";
 import { agents, meetings } from "@/db/schema";
 import { streamVideo } from "@/lib/stream-video";
 import { inngest } from "@/app/inngest/client";
+import { streamChatClient } from "@/lib/stream-chat";
+import { generateAvatarUri } from "@/lib/avatar";
+
+const openaiClient = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 function verifySignatureWithSDK(body: string, signature: string): boolean {
   return streamVideo.verifyWebhook(body, signature);

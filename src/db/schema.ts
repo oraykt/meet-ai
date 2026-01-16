@@ -98,3 +98,11 @@ export const meetings = pgTable("meetings", {
   createdAt: timestamp("created_at").$defaultFn(() => /* @__PURE__ */ new Date()),
   updatedAt: timestamp("updated_at").$defaultFn(() => /* @__PURE__ */ new Date()),
 });
+export const processedChatMessages = pgTable("processed_chat_messages", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+  messageId: text("message_id").notNull().unique(),
+  channelId: text("channel_id").notNull(),
+  processedAt: timestamp("processed_at").$defaultFn(() => /* @__PURE__ */ new Date()),
+});
