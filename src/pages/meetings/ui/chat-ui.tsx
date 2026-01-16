@@ -59,8 +59,8 @@ export const ChatUI = ({ meetingId, meetingName, user }: Props) => {
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
-      <div className="bg-linear-to-r from-slate-900 to-slate-800 text-white px-6 py-4 flex items-center gap-3 border-b border-slate-700 rounded-xl">
-        <div className="flex items-center justify-center w-10 h-10 bg-linear-to-br from-blue-400 to-purple-500 rounded-lg">
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white px-6 py-4 flex items-center gap-3 border-b border-slate-700 rounded-xl">
+        <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg">
           <BrainIcon className="w-5 h-5" />
         </div>
         <div className="flex-1">
