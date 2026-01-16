@@ -57,7 +57,7 @@ export const Transcript = ({ meetingId }: Props) => {
                 </Avatar>
                 <p className="text-sm font-medium">{item.user.name}</p>
                 <p className="text-sm text-primary font-medium">
-                  {new Date(item.start_ts * 1000).toISOString().substr(11, 8)}
+                  {new Date(item.start_ts * 1000).toISOString().slice(11, 19)}
                 </p>
                 <Highlighter
                   searchWords={[searchQuery]}
