@@ -118,19 +118,26 @@ export async function POST(request: NextRequest) {
       content: message.text!,
     }));
 
-  const GPTResponse = await openaiClient.chat.completions.create({
-    messages: [
-      { role: "system", content: instructions },
-      ...previousMessages,
-      { role: "user", content: text },
-    ],
-    model: "gpt-4o",
-  });
+  let GPTResponseText: string;
 
-  const GPTResponseText = GPTResponse.choices[0]?.message?.content;
+  try {
+    const GPTResponse = await openaiClient.chat.completions.create({
+      messages: [
+        { role: "system", content: instructions },
+        ...previousMessages,
+        { role: "user", content: text },
+      ],
+      model: "gpt-4o",
+    });
 
-  if (!GPTResponseText) {
-    return NextResponse.json({ status: "ok" });
+    GPTResponseText = GPTResponse.choices[0]?.message?.content || "";
+
+    if (!GPTResponseText) {
+      return NextResponse.json({ message: "Empty response from OpenAI" }, { status: 500 });
+    }
+  } catch (error) {
+    console.error("[Chat Webhook] OpenAI API error:", error);
+    return NextResponse.json({ message: "Failed to get response from OpenAI" }, { status: 500 });
   }
 
   const avatarUrl = generateAvatarUri({
@@ -138,20 +145,28 @@ export async function POST(request: NextRequest) {
     variant: "botttsNeutral",
   });
 
-  await streamChatClient.upsertUser({
-    id: existingAgent.id,
-    name: existingAgent.name,
-    image: avatarUrl,
-  });
-
-  await channel.sendMessage({
-    text: GPTResponseText,
-    user: {
+  try {
+    await streamChatClient.upsertUser({
       id: existingAgent.id,
       name: existingAgent.name,
       image: avatarUrl,
-    },
-  });
+    });
+
+    await channel.sendMessage(
+      {
+        text: GPTResponseText,
+        user: {
+          id: existingAgent.id,
+          name: existingAgent.name,
+          image: avatarUrl,
+        },
+      },
+      { skip_push: true }
+    );
+  } catch (error) {
+    console.error("[Chat Webhook] Stream Chat error:", error);
+    return NextResponse.json({ message: "Failed to send message to Stream Chat" }, { status: 500 });
+  }
 
   return NextResponse.json({ status: "ok" });
 }
