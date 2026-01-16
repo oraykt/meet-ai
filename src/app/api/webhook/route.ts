@@ -16,10 +16,6 @@ import { agents, meetings } from "@/db/schema";
 import { streamVideo } from "@/lib/stream-video";
 import { inngest } from "@/app/inngest/client";
 
-const openaiClient = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 function verifySignatureWithSDK(body: string, signature: string): boolean {
   return streamVideo.verifyWebhook(body, signature);
 }
