@@ -15,7 +15,6 @@ import { db } from "@/db";
 import { agents, meetings } from "@/db/schema";
 import { streamVideo } from "@/lib/stream-video";
 import { inngest } from "@/app/inngest/client";
-import { generateAvatarUri } from "@/lib/avatar";
 
 const openaiClient = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
