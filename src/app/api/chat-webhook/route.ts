@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
   `;
 
   const channel = streamChatClient.channel("messaging", channelId);
-  await channel.watch({ message_limit: 5 });
+  await channel.watch({ messages: { limit: 5 } });
 
   const previousMessages = channel.state.messages
     .filter((msg) => msg.text && msg.text.trim() !== "")
