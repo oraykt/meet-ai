@@ -1,5 +1,3 @@
-import OpenAI from "openai";
-import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { and, eq, not } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import {
@@ -8,7 +6,6 @@ import {
   CallSessionParticipantLeftEvent,
   CallSessionStartedEvent,
   CallTranscriptionReadyEvent,
-  MessageNewEvent,
 } from "@stream-io/node-sdk";
 
 import { db } from "@/db";
@@ -91,7 +88,7 @@ export async function POST(request: NextRequest) {
 
     const realtimeClient = await streamVideo.video.connectOpenAi({
       call,
-      openAiApiKey: process.env.OPENAPI_API_KEY!,
+      openAiApiKey: process.env.OPENAI_API_KEY!,
       agentUserId: existingAgent.id,
     });
 
@@ -106,8 +103,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Missing meetingId in call cid" }, { status: 400 });
     }
 
-    const call = streamVideo.video.call("default", meetingId);
-    await call.end();
+    const participantId = event.participant?.user_session_id;
+
+    // Get the meeting to find the agent ID
+    const [existingMeeting] = await db.select().from(meetings).where(eq(meetings.id, meetingId));
+
+    if (!existingMeeting) {
+      return NextResponse.json({ message: "Meeting not found" }, { status: 404 });
+    }
+
+    // Only end the call if the participant who left is NOT the agent
+    // This prevents the call from ending when the agent joins/leaves
+    if (participantId !== existingMeeting.agentId) {
+      const call = streamVideo.video.call("default", meetingId);
+      await call.end();
+    }
   } else if (eventType === "call.session_ended") {
     const event = payload as CallEndedEvent;
     const meetingId = event.call.custom?.meetingId;

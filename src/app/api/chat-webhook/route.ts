@@ -9,7 +9,7 @@ import { streamChatClient } from "@/lib/stream-chat";
 import { generateAvatarUri } from "@/lib/avatar";
 
 const openaiClient = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY!,
 });
 
 interface MessageNewEvent {

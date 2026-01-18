@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:webhook": "ngrok http --url=pseudonymous-vinita-lusciously.ngrok-free.dev 3000",
+    "dev:inngest": "npx inngest-cli@latest dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
